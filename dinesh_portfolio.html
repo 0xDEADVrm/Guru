@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinesh Kumar M — Software Developer</title>
+<link href="output.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sun: #FDB813;
+    --sun-glow: #FF6B35;
+    --mercury: #b5b5b5;
+    --venus: #e8cda0;
+    --earth: #4fc3f7;
+    --mars: #ef5350;
+    --jupiter: #c8956c;
+    --saturn: #e4d191;
+    --uranus: #80cbc4;
+    --neptune: #5c6bc0;
+    --space: #020408;
+    --star: #ffffff;
+    --nebula1: rgba(76, 0, 130, 0.15);
+    --nebula2: rgba(0, 50, 120, 0.2);
+    --text-glow: #4fc3f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--space);
+    font-family: 'Exo 2', sans-serif;
+    color: #e0e0e0;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 20px; height: 20px;
+    border: 2px solid var(--text-glow);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, border-color 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-dot {
+    position: fixed;
+    width: 5px; height: 5px;
+    background: var(--sun);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Starfield */
+  #starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Nebula bg */
+  .nebula-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 20% 30%, var(--nebula1) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, var(--nebula2) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(0, 20, 60, 0.3) 0%, transparent 80%);
+  }
+
+  /* Orbitron font */
+  .font-orbitron { font-family: 'Orbitron', monospace; }
+  .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+
+  /* Glow effects */
+  .glow-sun { text-shadow: 0 0 20px var(--sun), 0 0 40px var(--sun-glow); }
+  .glow-blue { text-shadow: 0 0 15px var(--text-glow), 0 0 30px var(--text-glow); }
+  .glow-mars { text-shadow: 0 0 15px var(--mars); }
+  .box-glow { box-shadow: 0 0 20px rgba(79, 195, 247, 0.3), 0 0 40px rgba(79, 195, 247, 0.1), inset 0 0 20px rgba(79, 195, 247, 0.05); }
+  .box-glow-sun { box-shadow: 0 0 30px rgba(253, 184, 19, 0.4), 0 0 60px rgba(255, 107, 53, 0.2); }
+
+  /* Solar system animation */
+  .solar-system {
+    position: relative;
+    width: 600px; height: 600px;
+    margin: auto;
+  }
+
+  .sun-core {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff7c0 0%, #FDB813 40%, #FF6B35 70%, #c0392b 100%);
+    box-shadow: 0 0 40px #FDB813, 0 0 80px #FF6B35, 0 0 120px rgba(255,107,53,0.5);
+    animation: pulse-sun 4s ease-in-out infinite;
+    z-index: 10;
+  }
+
+  @keyframes pulse-sun {
+    0%, 100% { box-shadow: 0 0 40px #FDB813, 0 0 80px #FF6B35, 0 0 120px rgba(255,107,53,0.5); transform: translate(-50%, -50%) scale(1); }
+    50% { box-shadow: 0 0 60px #FDB813, 0 0 100px #FF6B35, 0 0 160px rgba(255,107,53,0.6); transform: translate(-50%, -50%) scale(1.05); }
+  }
+
+  .orbit {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+    animation: spin linear infinite;
+  }
+
+  .planet {
+    position: absolute;
+    border-radius: 50%;
+    top: -6px; left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Orbit sizes & speeds */
+  .orbit-1 { width: 120px; height: 120px; animation-duration: 4s; }
+  .orbit-2 { width: 180px; height: 180px; animation-duration: 7s; }
+  .orbit-3 { width: 240px; height: 240px; animation-duration: 12s; }
+  .orbit-4 { width: 310px; height: 310px; animation-duration: 22s; }
+  .orbit-5 { width: 390px; height: 390px; animation-duration: 52s; }
+  .orbit-6 { width: 470px; height: 470px; animation-duration: 84s; }
+
+  .p-mercury { width: 8px; height: 8px; background: radial-gradient(circle, #d4d4d4, #888); top: -4px; }
+  .p-venus   { width: 14px; height: 14px; background: radial-gradient(circle, #f5deb3, #c8a060); top: -7px; }
+  .p-earth   { width: 14px; height: 14px; background: radial-gradient(circle, #87ceeb, #1565c0); top: -7px; }
+  .p-mars    { width: 10px; height: 10px; background: radial-gradient(circle, #ff6b6b, #b71c1c); top: -5px; }
+  .p-jupiter { width: 28px; height: 28px; background: radial-gradient(circle, #e8c49a, #a0522d); top: -14px; }
+  .p-saturn  { width: 22px; height: 22px; background: radial-gradient(circle, #f5e6aa, #b8860b); top: -11px; }
+
+  .saturn-ring {
+    position: absolute;
+    width: 40px; height: 10px;
+    border: 2px solid rgba(229, 213, 145, 0.6);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotateX(70deg);
+  }
+
+  @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+  @keyframes spin-reverse { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+
+  /* Counter-rotate planet labels to stay upright */
+  .planet-label {
+    position: absolute;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.6);
+    top: 14px; left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    backdrop-filter: blur(20px);
+    background: rgba(2, 4, 8, 0.8);
+    border-bottom: 1px solid rgba(79, 195, 247, 0.1);
+  }
+
+  .nav-link {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    transition: all 0.3s;
+    position: relative;
+    padding-bottom: 2px;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--text-glow);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .nav-link:hover { color: var(--text-glow); }
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  /* Section */
+  section { position: relative; z-index: 1; }
+
+  /* Card styles */
+  .space-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(79, 195, 247, 0.15);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .space-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--text-glow), transparent);
+    animation: scan 4s linear infinite;
+  }
+  @keyframes scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+  .space-card:hover {
+    border-color: rgba(79, 195, 247, 0.4);
+    background: rgba(79, 195, 247, 0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(79, 195, 247, 0.15);
+  }
+
+  /* Skill bar */
+  .skill-bar-track {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    animation: fillBar 2s ease forwards;
+    transform-origin: left;
+  }
+  @keyframes fillBar { from { width: 0%; } }
+
+  /* Planet section markers */
+  .section-planet {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-planet-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  /* Timeline */
+  .timeline-line {
+    position: absolute;
+    left: 20px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--text-glow), transparent);
+  }
+  .timeline-dot {
+    position: absolute;
+    left: 13px;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    border: 2px solid var(--text-glow);
+    background: var(--space);
+    box-shadow: 0 0 10px var(--text-glow);
+  }
+
+  /* Floating particles */
+  .particle {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: float-particle linear infinite;
+    z-index: 0;
+  }
+  @keyframes float-particle {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+  }
+
+  /* Badge */
+  .tech-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid rgba(79,195,247,0.3);
+    background: rgba(79,195,247,0.08);
+    color: var(--text-glow);
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .tech-badge:hover {
+    background: rgba(79,195,247,0.2);
+    box-shadow: 0 0 10px rgba(79,195,247,0.3);
+  }
+
+  /* Hero text animation */
+  .hero-title span {
+    display: inline-block;
+    opacity: 0;
+    animation: letterIn 0.5s forwards;
+  }
+  @keyframes letterIn {
+    from { opacity: 0; transform: translateY(20px) rotateX(-90deg); }
+    to { opacity: 1; transform: translateY(0) rotateX(0); }
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  /* Section divider */
+  .cosmic-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(79,195,247,0.5), var(--sun), rgba(79,195,247,0.5), transparent);
+    margin: 0;
+  }
+
+  /* Typewriter */
+  .typewriter {
+    overflow: hidden;
+    border-right: 2px solid var(--text-glow);
+    white-space: nowrap;
+    animation: typing 3s steps(30) forwards, blink 0.75s step-end infinite;
+  }
+  @keyframes typing { from { width: 0; } to { width: 100%; } }
+  @keyframes blink { 50% { border-color: transparent; } }
+
+  /* Project card hover */
+  .project-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(79,195,247,0.05) 100%);
+    pointer-events: none;
+  }
+
+  /* Contact link */
+  .contact-link {
+    transition: all 0.3s;
+    position: relative;
+  }
+  .contact-link:hover {
+    color: var(--text-glow);
+    text-shadow: 0 0 10px var(--text-glow);
+  }
+
+  /* Animated gradient border */
+  .grad-border {
+    position: relative;
+  }
+  .grad-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(45deg, var(--text-glow), var(--sun), var(--mars), var(--neptune));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotate-gradient 4s linear infinite;
+    background-size: 300% 300%;
+  }
+  @keyframes rotate-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--space); }
+  ::-webkit-scrollbar-thumb { background: rgba(79,195,247,0.4); border-radius: 2px; }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Nebula background -->
+<div class="nebula-bg"></div>
+
+<!-- Starfield canvas -->
+<canvas id="starfield"></canvas>
+
+<!-- Navigation -->
+<nav class="px-8 py-4">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div class="font-orbitron text-sm font-bold" style="color: var(--sun);">
+      DK<span style="color: var(--text-glow);">.DEV</span>
+    </div>
+    <div class="flex gap-8">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+
+  <!-- Solar System Visual -->
+  <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+    <div class="solar-system" style="transform: scale(1.4);">
+      <div class="sun-core"></div>
+      <div class="orbit orbit-1"><div class="planet p-mercury"></div></div>
+      <div class="orbit orbit-2"><div class="planet p-venus"></div></div>
+      <div class="orbit orbit-3"><div class="planet p-earth"></div></div>
+      <div class="orbit orbit-4"><div class="planet p-mars"></div></div>
+      <div class="orbit orbit-5"><div class="planet p-jupiter"></div></div>
+      <div class="orbit orbit-6">
+        <div class="planet p-saturn" style="position:relative">
+          <div class="saturn-ring"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 text-center max-w-5xl mx-auto px-8">
+    <!-- Coordinates label -->
+    <div class="font-mono-tech text-xs mb-6 inline-block px-4 py-2 rounded" style="color: rgba(79,195,247,0.7); border: 1px solid rgba(79,195,247,0.2); letter-spacing: 3px;">
+      SOLAR SYSTEM // MILKY WAY // EARTH // CHENNAI
+    </div>
+
+    <h1 class="font-orbitron font-black mb-4" style="font-size: clamp(2.5rem, 8vw, 6rem); line-height: 1.1;">
+      <span style="display:block; color: rgba(255,255,255,0.9);">DINESH</span>
+      <span style="display:block; background: linear-gradient(90deg, var(--sun), var(--sun-glow), var(--mars)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" class="glow-sun">KUMAR M</span>
+    </h1>
+
+    <div class="font-mono-tech mb-8" style="color: var(--text-glow); font-size: 1.1rem; letter-spacing: 5px;">
+      SOFTWARE DEVELOPER
+    </div>
+
+    <p class="max-w-2xl mx-auto text-sm leading-relaxed mb-10" style="color: rgba(255,255,255,0.5); font-weight: 300; letter-spacing: 0.5px;">
+      Navigating the infinite universe of code — a Computer Science student orbiting the cutting edge of software development with strong foundations in Java, Python, and distributed systems.
+    </p>
+
+    <div class="flex flex-wrap gap-4 justify-center mb-12">
+      <span class="tech-badge">JAVA</span>
+      <span class="tech-badge">PYTHON</span>
+      <span class="tech-badge">MYSQL</span>
+      <span class="tech-badge">MSA</span>
+      <span class="tech-badge">FEDERATED LEARNING</span>
+    </div>
+
+    <div class="flex gap-6 justify-center">
+      <a href="#projects" class="font-orbitron text-xs px-8 py-3 rounded" style="background: linear-gradient(135deg, var(--text-glow), #1a6b9a); letter-spacing: 2px; box-shadow: 0 0 20px rgba(79,195,247,0.4);">
+        VIEW PROJECTS
+      </a>
+      <a href="#contact" class="font-orbitron text-xs px-8 py-3 rounded" style="border: 1px solid rgba(79,195,247,0.4); color: var(--text-glow); letter-spacing: 2px; backdrop-filter: blur(5px);">
+        MAKE CONTACT
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
+    <div class="font-mono-tech text-xs mb-2 text-center" style="color: rgba(255,255,255,0.3); letter-spacing: 3px;">SCROLL</div>
+    <div class="mx-auto w-px h-12" style="background: linear-gradient(to bottom, rgba(79,195,247,0.5), transparent);"></div>
+  </div>
+</section>
+
+<div class="cosmic-divider"></div>
+
+<!-- ABOUT SECTION -->
+<section id="about" class="py-24 px-8">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="section-planet fade-in">
+      <div class="section-planet-dot" style="background: var(--earth); color: var(--earth);"></div>
+      <span class="font-orbitron text-xs" style="color: var(--earth); letter-spacing: 3px;">SECTOR 03 // ABOUT</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+      <!-- Avatar / Orbit display -->
+      <div class="lg:col-span-2 flex justify-center fade-in">
+        <div class="relative" style="width: 260px; height: 260px;">
+          <!-- Outer rotating ring -->
+          <div class="absolute inset-0 rounded-full" style="border: 1px solid rgba(79,195,247,0.2); animation: spin 20s linear infinite;"></div>
+          <div class="absolute" style="top: 10px; left: 10px; right: 10px; bottom: 10px; border-radius: 50%; border: 1px dashed rgba(253,184,19,0.2); animation: spin 12s linear infinite reverse;"></div>
+          <!-- Center avatar -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="rounded-full flex items-center justify-center grad-border" style="width: 160px; height: 160px; background: radial-gradient(circle, rgba(79,195,247,0.1), rgba(2,4,8,0.9));">
+              <div class="font-orbitron font-black text-4xl" style="background: linear-gradient(135deg, var(--sun), var(--text-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">DK</div>
+            </div>
+          </div>
+          <!-- Orbiting dot -->
+          <div class="absolute inset-0 rounded-full" style="animation: spin 6s linear infinite;">
+            <div style="position:absolute; top: -5px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 10px var(--sun);"></div>
+          </div>
+          <div class="absolute inset-0 rounded-full" style="animation: spin 10s linear infinite reverse;">
+            <div style="position:absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 7px; height: 7px; border-radius: 50%; background: var(--text-glow); box-shadow: 0 0 8px var(--text-glow);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="lg:col-span-3 fade-in">
+        <h2 class="font-orbitron font-bold text-3xl mb-2" style="color: #fff;">Software Developer</h2>
+        <div class="font-mono-tech text-xs mb-6" style="color: var(--text-glow); letter-spacing: 3px;">PANIMALAR ENGINEERING COLLEGE // CSE // 2023-2026</div>
+        <p class="text-sm leading-loose mb-6" style="color: rgba(255,255,255,0.6);">
+          Motivated and detail-oriented Computer Science student with a solid foundation in programming, data structures, and software development. Passionate about exploring new technologies and solving complex problems — like charting unexplored star systems.
+        </p>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="space-card rounded p-4">
+            <div class="font-mono-tech text-xs mb-1" style="color: var(--text-glow); letter-spacing: 2px;">LOCATION</div>
+            <div class="text-sm font-medium">Chennai, India</div>
+          </div>
+          <div class="space-card rounded p-4">
+            <div class="font-mono-tech text-xs mb-1" style="color: var(--text-glow); letter-spacing: 2px;">LANGUAGES</div>
+            <div class="text-sm font-medium">English · Tamil</div>
+          </div>
+          <div class="space-card rounded p-4">
+            <div class="font-mono-tech text-xs mb-1" style="color: var(--text-glow); letter-spacing: 2px;">EMAIL</div>
+            <div class="text-xs" style="color: rgba(255,255,255,0.7);">mohandhinesh2001@gmail.com</div>
+          </div>
+          <div class="space-card rounded p-4">
+            <div class="font-mono-tech text-xs mb-1" style="color: var(--text-glow); letter-spacing: 2px;">CONTACT</div>
+            <div class="text-sm font-medium">+91 9150734657</div>
+          </div>
+        </div>
+        <a href="https://www.linkedin.com/in/dinesh-kumar-m-6ab21633a" target="_blank" class="inline-flex items-center gap-2 font-orbitron text-xs px-5 py-2 rounded" style="border: 1px solid rgba(79,195,247,0.3); color: var(--text-glow); letter-spacing: 2px; transition: all 0.3s;">
+          ↗ LINKEDIN PROFILE
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cosmic-divider"></div>
+
+<!-- SKILLS SECTION -->
+<section id="skills" class="py-24 px-8">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="section-planet fade-in">
+      <div class="section-planet-dot" style="background: var(--jupiter); color: var(--jupiter);"></div>
+      <span class="font-orbitron text-xs" style="color: var(--jupiter); letter-spacing: 3px;">SECTOR 05 // CAPABILITIES</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <!-- Technical Skills -->
+      <div class="fade-in">
+        <h2 class="font-orbitron font-bold text-2xl mb-8" style="color: #fff;">Technical <span style="color: var(--text-glow);">Arsenal</span></h2>
+        <div class="space-y-6">
+
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono-tech text-sm" style="color: var(--sun);">JAVA</span>
+              <span class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4);">85%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="width: 85%; background: linear-gradient(90deg, var(--sun), var(--sun-glow));"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono-tech text-sm" style="color: var(--earth);">PYTHON</span>
+              <span class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4);">80%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="width: 80%; background: linear-gradient(90deg, var(--earth), #0288d1);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono-tech text-sm" style="color: var(--mars);">MYSQL</span>
+              <span class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4);">75%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="width: 75%; background: linear-gradient(90deg, var(--mars), #f57f17);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="font-mono-tech text-sm" style="color: var(--neptune);">MSA (Master in Software Applications)</span>
+              <span class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4);">70%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="width: 70%; background: linear-gradient(90deg, var(--neptune), #7c4dff);"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+<div class="fade-in">
+  <h2 class="font-orbitron font-bold text-2xl mb-8" style="color: #fff;">
+    Soft <span style="color: var(--sun);">Skills</span>
+  </h2>
+
+  <!-- Only this container -->
+  <div class="grid grid-cols-2 gap-4" id="soft-skills-grid"></div>
+</div>
+
+<div class="cosmic-divider"></div>
+
+<!-- PROJECTS SECTION -->
+<section id="projects" class="py-24 px-8">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="section-planet fade-in">
+      <div class="section-planet-dot" style="background: var(--mars); color: var(--mars);"></div>
+      <span class="font-orbitron text-xs" style="color: var(--mars); letter-spacing: 3px;">SECTOR 04 // MISSIONS</span>
+    </div>
+
+    <h2 class="font-orbitron font-bold text-3xl mb-12 fade-in">Featured <span style="color: var(--mars);">Projects</span></h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- Project 1: Crop Yield -->
+      <div class="space-card project-card rounded-xl p-8 fade-in">
+        <div class="flex items-center gap-3 mb-4">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle, #a5d6a7, #2e7d32); box-shadow: 0 0 15px rgba(76,175,80,0.5);"></div>
+          <div>
+            <div class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4); letter-spacing: 2px;">MISSION-01</div>
+            <h3 class="font-orbitron font-bold text-sm" style="color: #fff;">Crop Yield Prediction</h3>
+          </div>
+        </div>
+        <div style="height: 1px; background: linear-gradient(90deg, rgba(76,175,80,0.4), transparent); margin-bottom: 20px;"></div>
+        <ul class="space-y-3 mb-6">
+          <li class="flex gap-3 text-xs" style="color: rgba(255,255,255,0.6);">
+            <span style="color: #4caf50; margin-top: 1px;">▸</span>
+            Leverages soil parameters, weather patterns, and historical agricultural data to predict crop yields
+          </li>
+          <li class="flex gap-3 text-xs" style="color: rgba(255,255,255,0.6);">
+            <span style="color: #4caf50; margin-top: 1px;">▸</span>
+            Enables proactive measures to maximize yields, reduce waste, and increase profitability
+          </li>
+          <li class="flex gap-3 text-xs" style="color: rgba(255,255,255,0.6);">
+            <span style="color: #4caf50; margin-top: 1px;">▸</span>
+            Revolutionizes the future of farming with data-driven decisions
+          </li>
+        </ul>
+        <div class="flex flex-wrap gap-2">
+          <span class="tech-badge">Python</span>
+          <span class="tech-badge">ML</span>
+          <span class="tech-badge">Data Analysis</span>
+          <span class="tech-badge">Agriculture Tech</span>
+        </div>
+      </div>
+
+      <!-- Project 2: Federated Learning -->
+      <div class="space-card project-card rounded-xl p-8 fade-in">
+        <div class="flex items-center gap-3 mb-4">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle, #90caf9, #1565c0); box-shadow: 0 0 15px rgba(79,195,247,0.5);"></div>
+          <div>
+            <div class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4); letter-spacing: 2px;">MISSION-02</div>
+            <h3 class="font-orbitron font-bold text-sm" style="color: #fff;">Federated Learning Edge SOC</h3>
+          </div>
+        </div>
+        <div style="height: 1px; background: linear-gradient(90deg, rgba(79,195,247,0.4), transparent); margin-bottom: 20px;"></div>
+        <ul class="space-y-3 mb-6">
+          <li class="flex gap-3 text-xs" style="color: rgba(255,255,255,0.6);">
+            <span style="color: var(--text-glow); margin-top: 1px;">▸</span>
+            Collaborative learning among edge devices without sharing raw data — enhances security and reduces latency
+          </li>
+          <li class="flex gap-3 text-xs" style="color: rgba(255,255,255,0.6);">
+            <span style="color: var(--text-glow); margin-top: 1px;">▸</span>
+            Edge SOC analyzes threat data in real-time using federated learning models; identifies security risks efficiently
+          </li>
+          <li class="flex gap-3 text-xs" style="color: rgba(255,255,255,0.6);">
+            <span style="color: var(--text-glow); margin-top: 1px;">▸</span>
+            Leverages collective intelligence to enhance threat detection and protect networks from cyber threats
+          </li>
+        </ul>
+        <div class="flex flex-wrap gap-2">
+          <span class="tech-badge">Federated Learning</span>
+          <span class="tech-badge">Cybersecurity</span>
+          <span class="tech-badge">Edge Computing</span>
+          <span class="tech-badge">Real-Time</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="cosmic-divider"></div>
+
+<!-- EXPERIENCE / EDUCATION SECTION -->
+<section id="experience" class="py-24 px-8">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="section-planet fade-in">
+      <div class="section-planet-dot" style="background: var(--saturn); color: var(--saturn);"></div>
+      <span class="font-orbitron text-xs" style="color: var(--saturn); letter-spacing: 3px;">SECTOR 06 // TRAJECTORY</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <!-- Work Experience -->
+      <div class="fade-in">
+        <h2 class="font-orbitron font-bold text-2xl mb-10" style="color: #fff;">Work <span style="color: var(--saturn);">Experience</span></h2>
+        <div class="relative pl-12">
+          <div class="timeline-line"></div>
+
+          <div class="relative mb-8">
+            <div class="timeline-dot" style="top: 8px;"></div>
+            <div class="space-card rounded-lg p-6">
+              <div class="font-mono-tech text-xs mb-1" style="color: var(--text-glow); letter-spacing: 2px;">JUL 2022 — JUN 2023</div>
+              <h3 class="font-orbitron font-bold text-sm mb-1" style="color: #fff;">Indian Pistons Limited</h3>
+              <div class="text-xs mb-4" style="color: var(--saturn);">Production Department</div>
+              <ul class="space-y-2">
+                <li class="text-xs flex gap-2" style="color: rgba(255,255,255,0.6);">
+                  <span style="color: var(--saturn);">▸</span> Hands-on machine operation with focus on safety and productivity
+                </li>
+                <li class="text-xs flex gap-2" style="color: rgba(255,255,255,0.6);">
+                  <span style="color: var(--saturn);">▸</span> Quality inspection, defect identification, and product standards
+                </li>
+                <li class="text-xs flex gap-2" style="color: rgba(255,255,255,0.6);">
+                  <span style="color: var(--saturn);">▸</span> Packing, labeling, and dispatch coordination
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Internships -->
+        <h3 class="font-orbitron font-bold text-lg mb-6 mt-8" style="color: var(--text-glow);">Internships</h3>
+        <div class="space-y-3">
+          <div class="space-card rounded-lg p-4 flex items-center gap-4">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 8px var(--sun); flex-shrink: 0;"></div>
+            <div>
+              <div class="font-orbitron text-xs font-bold" style="color: #fff;">Unschool</div>
+              <div class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4);">Java & Python · Project Internship Certificate</div>
+            </div>
+          </div>
+          <div class="space-card rounded-lg p-4 flex items-center gap-4">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--earth); box-shadow: 0 0 8px var(--earth); flex-shrink: 0;"></div>
+            <div>
+              <div class="font-orbitron text-xs font-bold" style="color: #fff;">InternPe</div>
+              <div class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4);">Java Programming</div>
+            </div>
+          </div>
+          <div class="space-card rounded-lg p-4 flex items-center gap-4">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--mars); box-shadow: 0 0 8px var(--mars); flex-shrink: 0;"></div>
+            <div>
+              <div class="font-orbitron text-xs font-bold" style="color: #fff;">Codec</div>
+              <div class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.4);">Java Developer Intern</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="fade-in">
+        <h2 class="font-orbitron font-bold text-2xl mb-10" style="color: #fff;">Education <span style="color: var(--venus);">Path</span></h2>
+        <div class="relative pl-12">
+          <div class="timeline-line" style="background: linear-gradient(to bottom, var(--venus), transparent);"></div>
+
+          <div class="relative mb-8">
+            <div class="timeline-dot" style="top: 8px; border-color: var(--venus); box-shadow: 0 0 10px var(--venus);"></div>
+            <div class="space-card rounded-lg p-6">
+              <div class="font-mono-tech text-xs mb-1" style="color: var(--venus); letter-spacing: 2px;">2023 — 2026</div>
+              <h3 class="font-orbitron font-bold text-sm mb-1" style="color: #fff;">Panimalar Engineering College</h3>
+              <div class="text-xs mb-2" style="color: var(--venus);">B.E. Computer Science and Engineering</div>
+              <div class="text-xs" style="color: rgba(255,255,255,0.4);">Currently pursuing final year</div>
+            </div>
+          </div>
+
+          <div class="relative mb-8">
+            <div class="timeline-dot" style="top: 8px; border-color: var(--mercury); box-shadow: 0 0 10px var(--mercury);"></div>
+            <div class="space-card rounded-lg p-6">
+              <div class="font-mono-tech text-xs mb-1" style="color: var(--mercury); letter-spacing: 2px;">2019 — 2022</div>
+              <h3 class="font-orbitron font-bold text-sm mb-1" style="color: #fff;">Panimalar Polytechnic College</h3>
+              <div class="text-xs mb-2" style="color: var(--mercury);">Diploma in Mechanical Engineering</div>
+              <div class="text-xs" style="color: rgba(255,255,255,0.4);">Strong analytical and engineering foundation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="cosmic-divider"></div>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="py-24 px-8">
+  <div class="max-w-4xl mx-auto text-center">
+
+    <div class="section-planet justify-center fade-in">
+      <div class="section-planet-dot" style="background: var(--uranus); color: var(--uranus);"></div>
+      <span class="font-orbitron text-xs" style="color: var(--uranus); letter-spacing: 3px;">SECTOR 07 // COMMUNICATIONS</span>
+    </div>
+
+    <h2 class="font-orbitron font-black text-4xl mb-4 fade-in" style="color: #fff;">Initiate <span style="color: var(--text-glow);">Contact</span></h2>
+    <p class="text-sm mb-12 fade-in" style="color: rgba(255,255,255,0.4);">Transmitting across the cosmos — reach out for collaborations, opportunities, or just to say hello.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <a href="tel:+919150734657" class="space-card rounded-xl p-6 fade-in contact-link block">
+        <div class="text-3xl mb-3">📡</div>
+        <div class="font-mono-tech text-xs mb-2" style="color: var(--text-glow); letter-spacing: 2px;">PHONE</div>
+        <div class="text-sm font-medium">+91 9150734657</div>
+      </a>
+      <a href="mailto:mohandhinesh2001@gmail.com" class="space-card rounded-xl p-6 fade-in contact-link block">
+        <div class="text-3xl mb-3">🛸</div>
+        <div class="font-mono-tech text-xs mb-2" style="color: var(--text-glow); letter-spacing: 2px;">EMAIL</div>
+        <div class="text-xs font-medium">mohandhinesh2001@gmail.com</div>
+      </a>
+      <a href="https://www.linkedin.com/in/dinesh-kumar-m-6ab21633a" target="_blank" class="space-card rounded-xl p-6 fade-in contact-link block">
+        <div class="text-3xl mb-3">🌌</div>
+        <div class="font-mono-tech text-xs mb-2" style="color: var(--text-glow); letter-spacing: 2px;">LINKEDIN</div>
+        <div class="text-xs font-medium">dinesh-kumar-m</div>
+      </a>
+    </div>
+
+    <!-- Mini solar system footer decoration -->
+    <div class="flex justify-center opacity-40">
+      <div style="display: flex; gap: 20px; align-items: center;">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--mercury);box-shadow:0 0 6px var(--mercury);"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--venus);box-shadow:0 0 6px var(--venus);"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--earth);box-shadow:0 0 6px var(--earth);"></div>
+        <div style="width:50px;height:50px;border-radius:50%;background:radial-gradient(circle,#fff7c0,#FDB813,#FF6B35);box-shadow:0 0 30px var(--sun);"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--mars);box-shadow:0 0 6px var(--mars);"></div>
+        <div style="width:18px;height:18px;border-radius:50%;background:var(--jupiter);box-shadow:0 0 8px var(--jupiter);"></div>
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--saturn);box-shadow:0 0 8px var(--saturn);"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--uranus);box-shadow:0 0 6px var(--uranus);"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--neptune);box-shadow:0 0 6px var(--neptune);"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-8 text-center" style="border-top: 1px solid rgba(255,255,255,0.05);">
+  <div class="font-mono-tech text-xs" style="color: rgba(255,255,255,0.2); letter-spacing: 3px;">
+    © 2026 DINESH KUMAR M // DESIGNED IN THE COSMOS // BUILT WITH CODE
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const cursorDot = document.getElementById('cursorDot');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+  });
+
+  // Starfield
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createStars() {
+    stars = [];
+    for (let i = 0; i < 300; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5,
+        opacity: Math.random(),
+        speed: Math.random() * 0.3 + 0.05,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.twinkle += s.twinkleSpeed;
+      const opacity = (Math.sin(s.twinkle) * 0.4 + 0.6) * s.opacity;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  resizeCanvas();
+  createStars();
+  drawStars();
+  window.addEventListener('resize', () => { resizeCanvas(); createStars(); });
+
+  // Floating particles
+  function createParticle() {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 3 + 1;
+    const colors = ['#FDB813', '#4fc3f7', '#ef5350', '#80cbc4', '#5c6bc0'];
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}vw;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      opacity: ${Math.random() * 0.5 + 0.2};
+      animation-duration: ${Math.random() * 15 + 10}s;
+      animation-delay: ${Math.random() * 10}s;
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 25000);
+  }
+  setInterval(createParticle, 800);
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Populate soft skills grid
+  const softSkills = [
+    ['Project Management', '#FDB813', '⬡'],
+    ['Team Work', '#4fc3f7', '◈'],
+    ['Creative Thinking', '#ef5350', '✦'],
+    ['Leadership', '#80cbc4', '◉'],
+    ['Brand Development', '#c8956c', '⬟'],
+    ['Video Editing', '#e4d191', '◆'],
+    ['Adaptability', '#5c6bc0', '✧'],
+    ['Communication', '#b5b5b5', '◇'],
+  ];
+  const grid = document.getElementById('soft-skills-grid');
+  softSkills.forEach(([skill, color, icon]) => {
+    grid.innerHTML += `
+    <div class="space-card rounded-lg p-4 flex items-center gap-3 fade-in">
+      <span style="font-size:18px;color:${color};">${icon}</span>
+      <span class="text-xs font-medium" style="color:rgba(255,255,255,0.8);">${skill}</span>
+    </div>`;
+  });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Nav active state on scroll
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.style.color = link.getAttribute('href') === '#' + current
+        ? 'var(--text-glow)'
+        : 'rgba(255,255,255,0.6)';
+    });
+  });
+
+  // Cursor hover effect
+  document.querySelectorAll('a, button, .space-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+      cursor.style.borderColor = 'var(--sun)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+      cursor.style.borderColor = 'var(--text-glow)';
+    });
+  });
+</script>
+</body>
+</html>
